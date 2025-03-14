@@ -1,13 +1,64 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>quiz</ion-title>
-  </ion-toolbar>
+
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-button (click)="confirmQuit()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Question {{ currentIndex + 1 }}/{{ totalQuestions }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-badge color="light">Score: {{ score }}</ion-badge>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">quiz</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+    <div *ngIf="currentQuestion">
+        <ion-progress-bar [value]="(currentIndex + 1) / totalQuestions"></ion-progress-bar>
+
+        <ion-card>
+            <ion-card-header>
+                <ion-card-subtitle>{{ currentQuestion.category }}</ion-card-subtitle>
+                <ion-card-title [innerHTML]="currentQuestion.question"></ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-list>
+                    <ion-radio-group>
+                        @for (answer of currentQuestion.all_answers; track answer) {
+                        <ion-item>
+                            <ion-label [innerHTML]="answer"></ion-label>
+                            <ion-radio
+                                    [value]="answer"
+                                    (click)="selectAnswer(answer)"
+                                    [disabled]="answerSelected"></ion-radio>
+                        </ion-item>
+                        }
+                    </ion-radio-group>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+
+        @if (showFeedback) {
+        <div class="feedback-container">
+            <ion-card [color]="isCorrect ? 'success' : 'danger'">
+                <ion-card-content>
+                    <h2>{{ isCorrect ? 'Correct!' : 'Incorrect!' }}</h2>
+                    @if (!isCorrect) {
+                <p>La bonne réponse était: {{ correctAnswer }}</p>
+                }
+                </ion-card-content>
+            </ion-card>
+        </div>
+        }
+        @if (answerSelected) {
+        <ion-button
+                expand="block"
+                (click)="nextQuestion()">
+        {{ isLastQuestion ? 'Voir les résultats' : 'Question suivante' }}
+        </ion-button>
+        }
+    </div>
+
+    <ion-spinner *ngIf="!currentQuestion" name="circles" class="ion-margin-auto"></ion-spinner>
 </ion-content>

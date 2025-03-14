@@ -1,13 +1,54 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>home</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Quiz Trivia</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Configurer votre quiz</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Catégorie</ion-label>
+        <ion-select [(ngModel)]="selectedCategory">
+          <ion-select-option [value]="0">Toutes les catégories</ion-select-option>
+            @for (category of categories; track category) {
+            <ion-select-option [value]="category.id">
+            {{ category.name }}
+            </ion-select-option>
+            }
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Difficulté</ion-label>
+        <ion-select [(ngModel)]="selectedDifficulty">
+          <ion-select-option value="">Toutes les difficultés</ion-select-option>
+          <ion-select-option value="easy">Facile</ion-select-option>
+          <ion-select-option value="medium">Moyen</ion-select-option>
+          <ion-select-option value="hard">Difficile</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Nombre de questions</ion-label>
+        <ion-range min="5" max="20" step="1" snaps="true" [(ngModel)]="questionCount">
+          <ion-label slot="end">{{ questionCount }}</ion-label>
+        </ion-range>
+      </ion-item>
+
+      <ion-button expand="block" (click)="startQuiz()">Commencer le Quiz</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Historique</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="block" (click)="viewHistory()">Voir l'historique</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

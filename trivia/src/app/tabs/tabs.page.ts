@@ -8,6 +8,7 @@ import { triangle, ellipse, square } from 'ionicons/icons';
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
   imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
+  standalone: true
 })
 export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
